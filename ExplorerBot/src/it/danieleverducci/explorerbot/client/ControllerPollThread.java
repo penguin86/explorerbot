@@ -14,6 +14,10 @@
 
     You should have received a copy of the GNU General Public License
     along with ExplorerBot.  If not, see <http://www.gnu.org/licenses/>.
+    
+    This file accesses the JInput library binaries. The JInput library
+    is licensed under the MIT license, and its source code is NOT included
+    in this project.
 */
 
 package it.danieleverducci.explorerbot.client;
