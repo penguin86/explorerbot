@@ -3,5 +3,7 @@
 
     <string name="app_name">AndroidExplorerbotServer</string>
     <string name="srv">Server started</string>
+    <string name="explain">Exiting with HOME key will keep the server running. To exit completly press BACK or use the button below.</string>
+    <string name="killserver">Kill server</string>
 
 </resources>

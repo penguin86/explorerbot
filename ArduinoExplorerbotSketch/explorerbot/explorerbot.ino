@@ -37,6 +37,7 @@ const int hBridge2pin = 10;
 #include <Servo.h>
 Servo steeringServo;
 byte gamepadPosition[2];
+byte missedUpdates=0;
 
 void setup(){
   steeringServo.attach(servoPin);  //steering servo to pin 7
@@ -48,8 +49,16 @@ void setup(){
 
 void loop(){
   if(readGamepadPositionFromSerial()){
+    missedUpdates=0;
+    //If data ready, drive motors
     steerTo(gamepadPosition[0]);
     accelerateTo(gamepadPosition[1]);
+  } else {
+    //If data not ready for 5 times (500ms), stop the robot (for security reasons, e.g. the connection may be dropped)
+    missedUpdates++;
+    if(missedUpdates>5){
+      accelerateTo(63);
+    }
   }
   delay(100);
 }
@@ -80,6 +89,6 @@ void accelerateTo(byte speedByte){
     //speedByte = speedByte-64;    
   }
   //analogWrite(hBridgeEnable, speedByte*2);
-  if(speedByte<32 || speedByte>96) digitalWrite(hBridgeEnable, HIGH);
+  if(speedByte<47 || speedByte>79) digitalWrite(hBridgeEnable, HIGH);
   else digitalWrite(hBridgeEnable, LOW);
 }

@@ -21,4 +21,5 @@ package it.danieleverducci.explorerbotserver;
 public class AppConfiguration {
 	public static final int PORT=6787;	//The default server port
 	public static final boolean LOG_ENABLED=false;
+	public static final String DEFAULT_IPCAMERA_APP_PACKAGENAME="com.pas.webcam";
 }

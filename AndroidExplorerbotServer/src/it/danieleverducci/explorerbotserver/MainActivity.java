@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with AndroidExplorerbotServer.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package it.danieleverducci.explorerbotserver;
 
@@ -23,10 +23,15 @@ import it.danieleverducci.explorerbot.objects.GamepadPosition;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 
-public class MainActivity extends Activity implements OnControllerPolledListener {
+public class MainActivity extends Activity implements OnControllerPolledListener, OnClickListener {
 	private SerialCommunication serial;
+	private ServerNetworkCommunicationThread sct;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +42,13 @@ public class MainActivity extends Activity implements OnControllerPolledListener
 		serial = new SerialCommunication(this);
 
 		//Start network communication server
-		ServerNetworkCommunicationThread sct = new ServerNetworkCommunicationThread();
+		sct = new ServerNetworkCommunicationThread();
 		sct.setOnControllerPolledListener(this);
 		sct.start();
 
+		//Register interface buttons listener
+		findViewById(R.id.killserverbutton).setOnClickListener(this);
+		findViewById(R.id.startvideo).setOnClickListener(this);
 	}
 
 	@Override
@@ -56,6 +64,11 @@ public class MainActivity extends Activity implements OnControllerPolledListener
 
 	@Override
 	protected void onDestroy() {
+		//Terminate network thread
+		if(sct!=null && sct.isAlive()){
+			sct.setMustExit(true);
+		}
+		//Terminate serial connection to Arduino
 		if(serial!=null){
 			try {
 				serial.closeConnection();
@@ -64,6 +77,27 @@ public class MainActivity extends Activity implements OnControllerPolledListener
 			}
 		}
 		super.onDestroy();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.killserverbutton:
+			finish();	//Finishing the activity, onDestroy will be called
+			break;
+		case R.id.startvideo:
+			launchStreamingApp();
+			break;
+		}
+	}
+
+	/**
+	 * If the app is installed, start it. Otherwise, open the Android Market for download
+	 */
+	private void launchStreamingApp() {
+		Intent launchIntent = getPackageManager().getLaunchIntentForPackage(AppConfiguration.DEFAULT_IPCAMERA_APP_PACKAGENAME);
+		if(launchIntent==null) launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + AppConfiguration.DEFAULT_IPCAMERA_APP_PACKAGENAME));
+		startActivity( launchIntent );
 	}
 
 }
