@@ -53,7 +53,10 @@ public class ClientNetworkCommunicationThread extends Thread {
 					//Send to network
 					try{
 						oos.writeObject(lastKnownPosition);
+						oos.flush();
+						System.out.println(lastKnownPosition.getX()+" - "+lastKnownPosition.getY());
 						lastKnownPosition=null;
+						oos.reset();
 					}catch(SocketException e){
 						System.out.println("Connection interrupted by server. Exiting.");
 						System.exit(0);

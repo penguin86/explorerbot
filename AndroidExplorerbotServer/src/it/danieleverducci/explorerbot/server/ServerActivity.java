@@ -16,8 +16,11 @@
     along with AndroidExplorerbotServer.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.danieleverducci.explorerbotserver;
+package it.danieleverducci.explorerbot.server;
 
+import it.danieleverducci.explorerbot.AndroidAppConfiguration;
+import it.danieleverducci.explorerbot.R;
+import it.danieleverducci.explorerbot.interfaces.OnControllerPolledListener;
 import it.danieleverducci.explorerbot.objects.GamepadPosition;
 
 import java.io.IOException;
@@ -28,15 +31,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnControllerPolledListener, OnClickListener {
+public class ServerActivity extends Activity implements OnControllerPolledListener, OnClickListener {
 	private SerialCommunication serial;
 	private ServerNetworkCommunicationThread sct;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_server);
+		((TextView)findViewById(R.id.port)).setText(AndroidAppConfiguration.PORT+"");
 
 		//Initialize serial communication
 		serial = new SerialCommunication(this);
@@ -95,8 +100,8 @@ public class MainActivity extends Activity implements OnControllerPolledListener
 	 * If the app is installed, start it. Otherwise, open the Android Market for download
 	 */
 	private void launchStreamingApp() {
-		Intent launchIntent = getPackageManager().getLaunchIntentForPackage(AppConfiguration.DEFAULT_IPCAMERA_APP_PACKAGENAME);
-		if(launchIntent==null) launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + AppConfiguration.DEFAULT_IPCAMERA_APP_PACKAGENAME));
+		Intent launchIntent = getPackageManager().getLaunchIntentForPackage(AndroidAppConfiguration.DEFAULT_IPCAMERA_APP_PACKAGENAME);
+		if(launchIntent==null) launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + AndroidAppConfiguration.DEFAULT_IPCAMERA_APP_PACKAGENAME));
 		startActivity( launchIntent );
 	}
 

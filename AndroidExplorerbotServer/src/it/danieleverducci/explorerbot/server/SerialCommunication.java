@@ -16,8 +16,9 @@
     along with AndroidExplorerbotServer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package it.danieleverducci.explorerbotserver;
+package it.danieleverducci.explorerbot.server;
 
+import it.danieleverducci.explorerbot.AndroidAppConfiguration;
 import it.danieleverducci.explorerbot.objects.GamepadPosition;
 
 import java.io.IOException;
@@ -34,15 +35,15 @@ public class SerialCommunication {
 	private boolean connected=false;
 	private UsbSerialDriver driver;
 
-	public SerialCommunication(MainActivity context) {
-		if(AppConfiguration.LOG_ENABLED)  Log.d(this.getClass().toString(),"Searcing for Arduino: ");
+	public SerialCommunication(Context context) {
+		if(AndroidAppConfiguration.LOG_ENABLED)  Log.d(this.getClass().toString(),"Searcing for Arduino: ");
 
 		//Find first port
 		UsbManager manager = (UsbManager)context.getSystemService(Context.USB_SERVICE);
 		driver = UsbSerialProber.acquire(manager);
 
 		if(driver!=null){
-			if(AppConfiguration.LOG_ENABLED)  Log.d(this.getClass().toString(),"Found arduino on port"+driver.getDevice().getDeviceName());
+			if(AndroidAppConfiguration.LOG_ENABLED)  Log.d(this.getClass().toString(),"Found arduino on port"+driver.getDevice().getDeviceName());
 			connected=true;
 			try {
 				driver.setBaudRate(9600);
@@ -50,7 +51,7 @@ public class SerialCommunication {
 				e.printStackTrace();
 			}
 		} else {
-			if(AppConfiguration.LOG_ENABLED)  Log.d(this.getClass().toString(),"Arduino not found!");
+			if(AndroidAppConfiguration.LOG_ENABLED)  Log.d(this.getClass().toString(),"Arduino not found!");
 			connected=false;
 		}
 	}
@@ -66,7 +67,7 @@ public class SerialCommunication {
 		data[0] = (byte)((pos.getX()+1)*63);//x
 		data[1] = (byte)((pos.getY()+1)*63);//y
 		driver.write(data, 80);
-		if(AppConfiguration.LOG_ENABLED)  Log.e("DANY", "Written "+pos.getX()+" "+pos.getY());
+		if(AndroidAppConfiguration.LOG_ENABLED)  Log.e("DANY", "Written "+pos.getX()+" "+pos.getY());
 	}
 
 	/**

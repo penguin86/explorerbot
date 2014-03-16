@@ -64,11 +64,13 @@ void loop(){
 }
 
 boolean readGamepadPositionFromSerial(){
-  if(Serial.available()>1){   //Bytes received in pairs
+  if(Serial.available()==2){   //Bytes received in pairs
     gamepadPosition[0] = Serial.read();
     gamepadPosition[1] = Serial.read();
     return true;
-  } 
+  } else { //Data corruption: even bits!
+    Serial.readBytes(NULL, Serial.available());
+  }
   return false;
 }
 

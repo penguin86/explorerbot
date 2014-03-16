@@ -5,5 +5,7 @@
     <string name="srv">Server started</string>
     <string name="explain">Exiting with HOME key will keep the server running. To exit completly press BACK or use the button below.</string>
     <string name="killserver">Kill server</string>
+    <string name="drive">Activate accelerometer drive</string>
+    <string name="api_requirement_not_satisfied">You need at least Android 3.1 for this feature.</string>
 
 </resources>
