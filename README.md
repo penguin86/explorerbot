@@ -1,6 +1,9 @@
 Explorerbot
 =========
 
+> This project was moved to [my private git server](https://git.ichibi.eu/penguin86/explorerbot) . This repository may not be up to date.
+> This is a personal project, probably of little use for others, and I don't currently accept contributions on it. Anyway, feel free to contact me if you have any idea.
+
 Explorerbot is a simple robot driven by Arduino through Java and an analog gamepad
 
 Setup
